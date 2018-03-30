@@ -14,11 +14,9 @@ class Controller:
                     (
                       title TEXT PRIMARY KEY,
                       rating DOUBLE 
-                    )
+                    );
                 '''
             )
-            self.connection.commit()
-
         except sqlite3.OperationalError:
             pass
 
@@ -29,7 +27,7 @@ class Controller:
                     (
                       title TEXT PRIMARY KEY,
                       rating DOUBLE 
-                    )
+                    );
                 '''
             )
             self.connection.commit()
@@ -38,10 +36,10 @@ class Controller:
             pass
 
     def uploadToDb(self,title,values):
-        statement = "INSERT INTO %s VALUES (?,?);" % title
+        statement = "INSERT INTO %s VALUES (?,?);"%title
         try:
+
             self.cursor.execute(statement, values)
-            self.connection.commit()
 
         except sqlite3.IntegrityError:
             print("INtegrity error ")
@@ -53,4 +51,7 @@ class Controller:
             for row in reader:
                 tuple=(row[0],row[1])
                 self.uploadToDb(title,tuple)
+        self.connection.commit()
+        self.cursor.close()
+        self.connection.close()
 
