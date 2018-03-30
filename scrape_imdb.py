@@ -20,8 +20,6 @@ class scraper:
             titles = container.find_all("a")
             rating = container.find_all("strong")
             try:
-                print(titles[0].text + " " + rating[0].text)
-                print(count)
                 writer.wirteToFile(titles[0].text, rating[0].text)
                 count+=1
             except IndexError:

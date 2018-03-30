@@ -22,8 +22,6 @@ class scraper:
             titles = container.findAll("div", {"class": "film__original"})
             rating = container.findAll("span", {"class": "rate__value"})
             try:
-                print(titles[0].text + " " + rating[0].text)
-                print(count)
                 writer.wirteToFile(titles[0].text, rating[0].text)
             except IndexError:
                 pass
