@@ -4,6 +4,8 @@ import csv
 
 class Controller:
 
+#db controller class
+
     def __init__(self):
         self.connection = sqlite3.connect('database.db')
         self.cursor = self.connection.cursor()
@@ -36,22 +38,23 @@ class Controller:
             pass
 
     def uploadToDb(self,title,values):
+        #prepare statment
         statement = "INSERT INTO %s VALUES (?,?);"%title
         try:
-
+            #exec statment
             self.cursor.execute(statement, values)
 
         except sqlite3.IntegrityError:
+            #getting errors because of stacking data in csv files, for debbuging pourpose deleate csv
             print("INtegrity error ")
             print(values)
 
     def readCSV(self,file,title):
+        #method to read data from csv and call upload
         with open(file,'r') as f:
             reader = csv.reader(f)
             for row in reader:
                 tuple=(row[0],row[1])
                 self.uploadToDb(title,tuple)
         self.connection.commit()
-        self.cursor.close()
-        self.connection.close()
 

@@ -4,9 +4,12 @@ import CSVWrite
 
 class scraper:
 
+#link to top 500
     filmweb_top500 = "http://www.filmweb.pl/ranking/film"
 
     def __init__(self):
+        #initialize vars for scraping
+
         self.uClient = uReq(scraper.filmweb_top500)
         self.page_html = self.uClient.read()
         self.uClient.close()

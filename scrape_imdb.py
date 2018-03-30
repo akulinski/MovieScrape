@@ -4,6 +4,8 @@ import CSVWrite
 
 class scraper:
 
+#for comments look in scrape_filmweb
+
     link='http://www.imdb.com/list/ls004427773/'
     def __init__(self):
         self.uClient = uReq(scraper.link)
