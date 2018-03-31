@@ -29,6 +29,9 @@ def main():
     rotten=scrapeRottenTomatoes.scraper()
     rotten.scrape()
 
+#upoload
+    db.readCSV('dataRotttenTomatoes.csv',"ROTTEN")
+
 #comon titles
 
     db.generateComon()

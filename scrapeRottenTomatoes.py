@@ -30,7 +30,12 @@ class scraper:
             titles = container.findAll("a", {"class": "unstyled articleLink"})
             rating = container.findAll("span", {"class": "tMeterScore"})
             try:
-                writer.wirteToFile(titles[0].text, rating[0].text)
-                print(str(titles[0].text).strip( )+str(rating[0].text).strip(" "))
+                writer.wirteToFile(str(titles[0].text).strip(" "), self.convertRating(str(rating[0].text).strip("%")))
+                #print(str(titles[0].text).strip( )+str(self.convertRating(rating[0].text))
             except IndexError:
                 pass
+
+
+
+    def convertRating(self,value):
+        return float((int(value)*10)/100)
