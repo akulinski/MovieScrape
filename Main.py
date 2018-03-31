@@ -30,7 +30,7 @@ def main():
     rotten.scrape()
 
 #upoload
-    db.readCSV('dataRotttenTomatoes.csv',"ROTTEN")
+    db.readCSV('dataRottenTomatoes.csv',"ROTTEN")
 
 #comon titles
 

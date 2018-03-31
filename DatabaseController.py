@@ -37,6 +37,22 @@ class Controller:
         except sqlite3.OperationalError:
             pass
 
+        try:
+            self.cursor.execute(
+                '''
+                  CREATE TABLE ROTTEN
+                    (
+                      title TEXT PRIMARY KEY,
+                      rating DOUBLE 
+                    );
+                '''
+            )
+            self.connection.commit()
+
+        except sqlite3.OperationalError:
+            pass
+
+
     def uploadToDb(self,title,values):
         #prepare statment
         statement = "INSERT INTO %s VALUES (?,?);"%title
@@ -53,14 +69,20 @@ class Controller:
         with open(file,'r') as f:
             reader = csv.reader(f)
             for row in reader:
-                #string strings of punctiations marks
+                #string strings of punctiations
+                row[0]=row[0].strip("+")
+                row[0] = row[0].strip()
+                if title is "ROTTEN":
+                    row[0] = row[0][:-6]
+
+                #print(row[0])
                 tuple=(row[0].translate(string.punctuation), row[1].translate(string.punctuation))
                 self.uploadToDb(title,tuple)
         self.connection.commit()
 
     def generateComon(self):
 
-        statment = "SELECT * FROM FILMWEB,IMDB WHERE FILMWEB.title == IMDB.title;"
+        statment = "SELECT * FROM FILMWEB,ROTTEN WHERE FILMWEB.title == ROTTEN.title;"
 
         for t in self.cursor.execute(statment):
             print(str(t))
