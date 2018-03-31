@@ -2,6 +2,7 @@
 import scrape_filmweb
 import scrape_imdb
 import DatabaseController
+import scrapeRottenTomatoes
 
 def main():
 
@@ -22,6 +23,15 @@ def main():
 
 #upoload
     db.readCSV('dataImdb.csv','IMDB')
+
+#scrape
+
+    rotten=scrapeRottenTomatoes.scraper()
+    rotten.scrape()
+
+#comon titles
+
+    db.generateComon()
 
 #closing cursore
     db.cursor.close()

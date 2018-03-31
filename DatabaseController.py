@@ -46,8 +46,7 @@ class Controller:
 
         except sqlite3.IntegrityError:
             #getting errors because of stacking data in csv files, for debbuging pourpose deleate csv
-            print("INtegrity error ")
-            print(values)
+            pass
 
     def readCSV(self,file,title):
         #method to read data from csv and call upload
@@ -58,4 +57,11 @@ class Controller:
                 tuple=(row[0].translate(string.punctuation), row[1].translate(string.punctuation))
                 self.uploadToDb(title,tuple)
         self.connection.commit()
+
+    def generateComon(self):
+
+        statment = "SELECT * FROM FILMWEB,IMDB WHERE FILMWEB.title == IMDB.title;"
+
+        for t in self.cursor.execute(statment):
+            print(str(t))
 

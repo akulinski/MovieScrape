@@ -5,8 +5,8 @@ import os.path
 
 class scraper:
 
-#link to top 500
-    filmweb_top500 = "http://www.filmweb.pl/ranking/film"
+#link to rotten 100
+    filmweb_top500 = "https://www.rottentomatoes.com/top/bestofrt/"
 
     def __init__(self):
         #initialize vars for scraping
@@ -18,18 +18,19 @@ class scraper:
 
     def scrape(self):
 
-        self.containers = self.page_soup.find_all("div", {"class": "item place"})
-
         #check if file exists if so, remove
-        if os.path.isfile("dataFilmWeb.csv"):
-            os.remove("dataFilmWeb.csv")
+        if os.path.isfile("dataRottenTomatoes.csv"):
+            os.remove("dataRottenTomatoes.csv")
 
-        writer = CSVWrite.Writer("dataFilmWeb")
+        writer = CSVWrite.Writer("dataRottenTomatoes")
         count=0
-        for container in self.containers:
-            titles = container.findAll("div", {"class": "film__original"})
-            rating = container.findAll("span", {"class": "rate__value"})
+
+        #titles in table
+        for container in self.page_soup.find_all('tr'):
+            titles = container.findAll("a", {"class": "unstyled articleLink"})
+            rating = container.findAll("span", {"class": "tMeterScore"})
             try:
                 writer.wirteToFile(titles[0].text, rating[0].text)
+                print(str(titles[0].text).strip( )+str(rating[0].text).strip(" "))
             except IndexError:
                 pass

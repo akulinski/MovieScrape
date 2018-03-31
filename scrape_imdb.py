@@ -1,6 +1,8 @@
 from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as Soup
 import CSVWrite
+import os.path
+
 
 class scraper:
 
@@ -16,6 +18,9 @@ class scraper:
     def scrape(self):
         self.containers = self.page_soup.find_all("div", {"class": "lister-item-content"})
 
+
+        if os.path.isfile("dataImdb.csv"):
+            os.remove("dataImdb.csv")
         writer = CSVWrite.Writer("dataImdb")
         count=0
         for container in self.containers:
