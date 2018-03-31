@@ -3,7 +3,8 @@ import scrape_filmweb
 import scrape_imdb
 import DatabaseController
 import scrapeRottenTomatoes
-
+import FacebookController
+import TOKEN
 def main():
 
 #starting point invoking methods from classes, scraping data info csv and uploding csv to db
@@ -34,12 +35,15 @@ def main():
 
 #comon titles
 
-    db.generateComon()
+#    db.generateComon()
 
 #closing cursore
     db.cursor.close()
     db.connection.close()
 
+fb=FacebookController.Facebook(TOKEN.token)
+
+fb.getMovies()
 
 if __name__ == '__main__':
     main()

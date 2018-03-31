@@ -10,7 +10,7 @@ class Writer:
             f.close()
 
 
-    def wirteToFile(self, title, rating):
+    def wirteToFile(self, title, rating='n/d'):
         with open(self.name, 'a') as f:
             writer = csv.writer(f)
             writer.writerow([title]+[rating])
