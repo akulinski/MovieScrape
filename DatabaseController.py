@@ -1,6 +1,6 @@
 import sqlite3
 import csv
-
+import string
 
 class Controller:
 
@@ -54,7 +54,8 @@ class Controller:
         with open(file,'r') as f:
             reader = csv.reader(f)
             for row in reader:
-                tuple=(row[0],row[1])
+                #string strings of punctiations marks
+                tuple=(row[0].translate(string.punctuation), row[1].translate(string.punctuation))
                 self.uploadToDb(title,tuple)
         self.connection.commit()
 
