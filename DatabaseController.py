@@ -1,6 +1,7 @@
 import sqlite3
 import csv
 import string
+import CSVWrite
 
 class Controller:
 
@@ -84,6 +85,20 @@ class Controller:
 
         statment = "SELECT * FROM FILMWEB,ROTTEN WHERE FILMWEB.title == ROTTEN.title;"
 
+        wr = CSVWrite.Writer("result")
         for t in self.cursor.execute(statment):
-            print(str(t))
+            #map values from query to variables
+            title = t[0]
+            firstMark = str(t[1])
+            secondMark=str(t[3])
 
+            #replace , with .
+            firstMark=firstMark.replace(",",".")
+            secondMark=secondMark.replace(",",".")
+            try:
+                #calculate mean
+                mean=(float(firstMark)+float(secondMark))/2
+                print("title: "+str(title)+" raking from FILMWEB: "+str(firstMark)+"ranking from ROTTENTOMATOES:  "+str(secondMark)+" MEAN value of both : "+str(mean))
+                wr.wirteToFile("Tytul: "+str(title),"Srednia z FILMWEB i ROTTENTOMATOES: "+str(mean))
+            except ValueError:
+                pass
