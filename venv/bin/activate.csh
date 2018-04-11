@@ -5,10 +5,17 @@
 
 alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PATH" && unset _OLD_VIRTUAL_PATH; rehash; test $?_OLD_VIRTUAL_PROMPT != 0 && set prompt="$_OLD_VIRTUAL_PROMPT" && unset _OLD_VIRTUAL_PROMPT; unsetenv VIRTUAL_ENV; test "\!:*" != "nondestructive" && unalias deactivate'
 
+<<<<<<< HEAD
 # Unset irrelevant variables.
 deactivate nondestructive
 
 setenv VIRTUAL_ENV "/home/albert/PycharmProjects/Movie/venv"
+=======
+# Unset irrelavent variables.
+deactivate nondestructive
+
+setenv VIRTUAL_ENV "/home/albert/PycharmProjects/movieScrape/venv"
+>>>>>>> 8502a2519c54cba741527620e507c32c0dbf386b
 
 set _OLD_VIRTUAL_PATH="$PATH"
 setenv PATH "$VIRTUAL_ENV/bin:$PATH"
