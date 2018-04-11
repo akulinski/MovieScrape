@@ -10,8 +10,9 @@ class Writer:
             f.close()
 
 
-    def wirteToFile(self, title, rating='n/d'):
+    def wirteToFile(self, title, rating=0):
         with open(self.name, 'a') as f:
             writer = csv.writer(f)
+            rating = float(str(rating).replace(",", "."))
             writer.writerow([title]+[rating])
             f.close()
