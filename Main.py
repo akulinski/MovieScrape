@@ -5,8 +5,6 @@ import DatabaseController
 import scrapeRottenTomatoes
 import FacebookController
 import TOKEN
-import tkinter as tk
-
 
 def main():
 
