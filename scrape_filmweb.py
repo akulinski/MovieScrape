@@ -25,7 +25,6 @@ class scraper:
             os.remove("dataFilmWeb.csv")
 
         writer = CSVWrite.Writer("dataFilmWeb")
-        count=0
         for container in self.containers:
             titles = container.findAll("div", {"class": "film__original"})
             rating = container.findAll("span", {"class": "rate__value"})

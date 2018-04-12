@@ -53,7 +53,6 @@ class Controller:
         except sqlite3.OperationalError:
             pass
 
-<<<<<<< HEAD
         try:
             self.cursor.execute(
                 '''
@@ -73,7 +72,7 @@ class Controller:
                 '''
                   CREATE TABLE FACEBOOK
                     (
-                      title TEXT PRIMARY KEY,
+                      title TEXT PRIMARY KEY
                     );
                 '''
             )
@@ -81,8 +80,6 @@ class Controller:
         except sqlite3.OperationalError:
             pass
 
-=======
->>>>>>> 8502a2519c54cba741527620e507c32c0dbf386b
 
     def uploadToDb(self,title,values):
         #prepare statment
@@ -101,7 +98,6 @@ class Controller:
             reader = csv.reader(f)
             for row in reader:
                 #string strings of punctiations
-<<<<<<< HEAD
                 row[0] = row[0].strip("+")
                 row[0] = row[0].strip()
 
@@ -112,7 +108,6 @@ class Controller:
                #print(row[0])
 
                 tuple = (row[0], row[1])
-=======
                 row[0]=row[0].strip("+")
                 row[0] = row[0].strip()
                 if title is "ROTTEN":
@@ -120,7 +115,6 @@ class Controller:
 
                 #print(row[0])
                 tuple=(row[0].translate(string.punctuation), row[1].translate(string.punctuation))
->>>>>>> 8502a2519c54cba741527620e507c32c0dbf386b
                 self.uploadToDb(title,tuple)
         self.connection.commit()
 
@@ -129,16 +123,12 @@ class Controller:
         statment = "SELECT * FROM FILMWEB,ROTTEN WHERE FILMWEB.title == ROTTEN.title;"
 
         wr = CSVWrite.Writer("result")
-<<<<<<< HEAD
         self.returnSet = self.cursor.execute(statment)
 
         if self.returnSet.rowcount == 0:
             print("NO COMMON VALUES")
 
         for t in self.returnSet :
-=======
-        for t in self.cursor.execute(statment):
->>>>>>> 8502a2519c54cba741527620e507c32c0dbf386b
             #map values from query to variables
             title = t[0]
             firstMark = str(t[1])
@@ -147,35 +137,18 @@ class Controller:
             #replace , with .
             firstMark=firstMark.replace(",",".")
             secondMark=secondMark.replace(",",".")
-<<<<<<< HEAD
-            print(title)
-=======
->>>>>>> 8502a2519c54cba741527620e507c32c0dbf386b
             try:
                 #calculate mean
                 mean=(float(firstMark)+float(secondMark))/2
-                print("title: "+str(title)+" raking from FILMWEB: "+str(firstMark)+"ranking from ROTTENTOMATOES:  "+str(secondMark)+" MEAN value of both : "+str(mean))
+                print("title: "+str(title)+"\nraking from FILMWEB: "+str(firstMark)+"\nranking from ROTTENTOMATOES:  "+str(secondMark)+"\nMEAN value of both : "+str(mean))
                 wr.wirteToFile("Tytul: "+str(title),"Srednia z FILMWEB i ROTTENTOMATOES: "+str(mean))
-<<<<<<< HEAD
                 #upload common titiles to database
-
                 #check if title is in watched movies from facebook
 
-                self.countStatment="SELECT COUNT(*) FROM FACEBBOK"
+                self.countStatment="SELECT COUNT(*) FROM FACEBOOK"
                 self.count=self.connection.execute(self.countStatment)
+                self.values=(str(title), mean)
+                self.uploadToDb("COMMON", self.values)
 
-                if(self.count==0):
-                    statement = "INSERT INTO %s VALUES (?,?);" % "COMMON"
-                    values=(str(title), mean)
-                    try:
-                        # exec statment
-                        self.cursor.execute(statement, values)
-
-                    except sqlite3.IntegrityError:
-                        # getting errors because of stacking data in csv files, for debbuging pourpose deleate csv
-                        pass
-
-=======
->>>>>>> 8502a2519c54cba741527620e507c32c0dbf386b
             except ValueError:
                 pass
