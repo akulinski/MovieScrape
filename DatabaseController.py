@@ -2,6 +2,7 @@ import sqlite3
 import csv
 import string
 import CSVWrite
+import heapq
 
 class Controller:
 
@@ -80,6 +81,7 @@ class Controller:
         except sqlite3.OperationalError:
             pass
 
+        self.heap=[]
 
     def uploadToDb(self,title,values):
         #prepare statment
@@ -125,8 +127,41 @@ class Controller:
         wr = CSVWrite.Writer("result")
         self.returnSet = self.cursor.execute(statment)
 
-        if self.returnSet.rowcount == 0:
-            print("NO COMMON VALUES")
+        if self.returnSet.arraysize == 1:
+            #jezeli nie ma wspolnych wartosci to wybierz top z filmwebu
+            statment = "SELECT * FROM FILMWEB;"
+            self.returnSet = self.cursor.execute(statment)
+
+            #go threw all movies from filmweb heapsort them and display top 10
+            for t in self.returnSet:
+                #heap sort teoretycznie powinien sortowac wzgledem pierwszego tupla
+
+                self.title=t[0]
+                if t[1] != "rating":
+                    self.rating=float(t[1])
+                    self.values=(self.rating,self.title)
+                    self.heap.append(self.values)
+
+            #heap sort going one here
+            heapq._heapify_max(self.heap)
+
+            self.count=0
+            for x in self.heap:
+                if self.count == 9:
+                    break
+                #kazda litera w slowie liczona jest jako odzielny argument rozwiazanie wrzucenie w tuple
+                t=(x[1],)
+                self.cursor.execute("SELECT COUNT(*) FROM FACEBOOK WHERE TITLE == ?; ", t)
+                self.result = self.cursor.fetchone()
+
+                if(self.result[0] == 0):
+                    print("Title "+x[1]+" Rating: "+str(x[0]))
+                    wr.wirteToFile("Tytul: " + str(x[1]), "Srednia: " + str(x[0]))
+                self.count += 1
+
+                #poping from heap
+                heapq.heappushpop(self.heap,x)
+
 
         for t in self.returnSet :
             #map values from query to variables

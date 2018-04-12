@@ -14,8 +14,8 @@ def main():
     db=DatabaseController.Controller()
 
 #scrape
-    #filmweb=scrape_filmweb.scraper()
-    #filmweb.scrape()
+    filmweb=scrape_filmweb.scraper()
+    filmweb.scrape()
 
 #upload
     db.readCSV('dataFilmWeb.csv','FILMWEB')
