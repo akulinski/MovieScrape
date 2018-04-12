@@ -5,13 +5,17 @@ import DatabaseController
 import scrapeRottenTomatoes
 import FacebookController
 import TOKEN
-
+import GoogleInfo
 
 def main():
 
 #starting point invoking methods from classes, scraping data info csv and uploding csv to db
 
     db=DatabaseController.Controller()
+
+
+    fb = FacebookController.Facebook(TOKEN.token)
+    fb.getMovies()
 
 #scrape
     filmweb=scrape_filmweb.scraper()
@@ -42,10 +46,6 @@ def main():
 #closing cursore
     db.cursor.close()
     db.connection.close()
-
-    fb=FacebookController.Facebook(TOKEN.token)
-
-    fb.getMovies()
 
 if __name__ == '__main__':
     main()
