@@ -3,6 +3,7 @@ import csv
 import string
 import CSVWrite
 import heapq
+import GoogleInfo
 
 class Controller:
 
@@ -160,7 +161,8 @@ class Controller:
                 self.count += 1
 
                 #poping from heap
-                heapq.heappushpop(self.heap,x)
+                GoogleInfo.Googler(str(x[1]))
+                heapq.heappushpop(self.heap, x)
 
 
         for t in self.returnSet :
@@ -191,6 +193,8 @@ class Controller:
                     self.countStatment="SELECT COUNT(*) FROM FACEBOOK"
                     self.count=self.connection.execute(self.countStatment)
                     self.values=(str(title), mean)
+
+                    GoogleInfo.Googler(str(title))
                     self.uploadToDb("COMMON", self.values)
 
                 except ValueError:

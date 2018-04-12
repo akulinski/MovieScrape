@@ -14,8 +14,8 @@ def main():
     db=DatabaseController.Controller()
 
 
-    fb = FacebookController.Facebook(TOKEN.token)
-    fb.getMovies()
+    #fb = FacebookController.Facebook(TOKEN.token)
+    #fb.getMovies()
 
 #scrape
     filmweb=scrape_filmweb.scraper()
