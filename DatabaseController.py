@@ -127,7 +127,7 @@ class Controller:
         wr = CSVWrite.Writer("result")
         self.returnSet = self.cursor.execute(statment)
 
-        if self.returnSet.arraysize == 1:
+        if self.returnSet.arraysize == 0:
             #jezeli nie ma wspolnych wartosci to wybierz top z filmwebu
             statment = "SELECT * FROM FILMWEB;"
             self.returnSet = self.cursor.execute(statment)
@@ -172,18 +172,26 @@ class Controller:
             #replace , with .
             firstMark=firstMark.replace(",",".")
             secondMark=secondMark.replace(",",".")
-            try:
-                #calculate mean
-                mean=(float(firstMark)+float(secondMark))/2
-                print("title: "+str(title)+"\nraking from FILMWEB: "+str(firstMark)+"\nranking from ROTTENTOMATOES:  "+str(secondMark)+"\nMEAN value of both : "+str(mean))
-                wr.wirteToFile("Tytul: "+str(title),"Srednia z FILMWEB i ROTTENTOMATOES: "+str(mean))
-                #upload common titiles to database
-                #check if title is in watched movies from facebook
 
-                self.countStatment="SELECT COUNT(*) FROM FACEBOOK"
-                self.count=self.connection.execute(self.countStatment)
-                self.values=(str(title), mean)
-                self.uploadToDb("COMMON", self.values)
+            #checking if title is watched movies from FACEBOOK
+            tmp=(title, )
+            self.cursor.execute("SELECT COUNT(*) FROM FACEBOOK WHERE TITLE == ?; ", tmp)
+            self.result = self.cursor.fetchone()
 
-            except ValueError:
-                pass
+            if (self.result[0] == 0):
+
+                try:
+                    #calculate mean
+                    mean=(float(firstMark)+float(secondMark))/2
+                    print("title: "+str(title)+"\nraking from FILMWEB: "+str(firstMark)+"\nranking from ROTTENTOMATOES:  "+str(secondMark)+"\nMEAN value of both : "+str(mean))
+                    wr.wirteToFile("Tytul: "+str(title),"Srednia z FILMWEB i ROTTENTOMATOES: "+str(mean))
+                    #upload common titiles to database
+                    #check if title is in watched movies from facebook
+
+                    self.countStatment="SELECT COUNT(*) FROM FACEBOOK"
+                    self.count=self.connection.execute(self.countStatment)
+                    self.values=(str(title), mean)
+                    self.uploadToDb("COMMON", self.values)
+
+                except ValueError:
+                    pass
