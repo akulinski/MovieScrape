@@ -19,5 +19,9 @@ class Writer:
     def wirteToFile(self, title, rating='n/d'):
         with open(self.name, 'a') as f:
             writer = csv.writer(f)
-            writer.writerow([title]+[rating])
+            print(str(title)+str(rating))
+            try:
+                writer.writerow([title]+[rating])
+            except UnicodeEncodeError:
+                writer.writerow("UnicodeEncodeError")
             f.close()

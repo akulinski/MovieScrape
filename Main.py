@@ -6,42 +6,50 @@ import scrapeRottenTomatoes
 import FacebookController
 import TOKEN
 import GoogleInfo
+import threading
 
 def main():
 
-#starting point invoking methods from classes, scraping data info csv and uploding csv to db
+    #starting point invoking methods from classes, scraping data info csv and uploding csv to db
 
     db=DatabaseController.Controller()
-
-
     #fb = FacebookController.Facebook(TOKEN.token)
     #fb.getMovies()
 
-#scrape
+    #scrape
     filmweb=scrape_filmweb.scraper()
-    filmweb.scrape()
 
-#upload
-    db.readCSV('dataFilmWeb.csv','FILMWEB')
+    threadFilmweb = threading.Thread(target=filmweb.scrape)
+    threadFilmweb.start()
+    #upload
 
-#scrape
+
+    #scrape
+
     imdb=scrape_imdb.scraper()
-    imdb.scrape()
+    threadImdb=threading.Thread(target=imdb.scrape)
+    threadImdb.start()
+    #upoload
 
-#upoload
-    db.readCSV('dataImdb.csv','IMDB')
 
-#scrape
+    #scrape
 
     rotten=scrapeRottenTomatoes.scraper()
-    rotten.scrape()
+    threadRotten = threading.Thread(target=rotten.scrape)
+    threadRotten.start()
 
-#upoload
+    #upoload
+
+    threadRotten.join()
     db.readCSV('dataRottenTomatoes.csv',"ROTTEN")
 
-#comon titles
-    db.generateComon()
+    threadImdb.join()
+    db.readCSV('dataImdb.csv', 'IMDB')
 
+    threadFilmweb.join()
+    db.readCSV('dataFilmWeb.csv', 'FILMWEB')
+    #comon titles
+    db.generateComon()
 
 #closing cursore
     db.cursor.close()

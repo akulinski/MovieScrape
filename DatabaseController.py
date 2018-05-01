@@ -100,25 +100,30 @@ class Controller:
         with open(file,'r') as f:
             reader = csv.reader(f)
             for row in reader:
-                #string strings of punctiations
-                row[0] = row[0].strip("+")
-                row[0] = row[0].strip()
+                try:
+                    #string strings of punctiations
+                    row[0] = row[0].strip("+")
+                    row[0] = row[0].strip()
 
-                if title is "ROTTEN":
-                    row[0] = row[0][:-6]
 
+                    if title is "ROTTEN":
+                        row[0] = row[0][:-6]
+                except IndexError:
+                    print("Index Error")
 
                #print(row[0])
+                try:
+                    tuple = (row[0], row[1])
+                    row[0]=row[0].strip("+")
+                    row[0] = row[0].strip()
+                    if title is "ROTTEN":
+                        row[0] = row[0][:-6]
 
-                tuple = (row[0], row[1])
-                row[0]=row[0].strip("+")
-                row[0] = row[0].strip()
-                if title is "ROTTEN":
-                    row[0] = row[0][:-6]
-
-                #print(row[0])
-                tuple=(row[0].translate(string.punctuation), row[1].translate(string.punctuation))
-                self.uploadToDb(title,tuple)
+                    #print(row[0])
+                    tuple=(row[0].translate(string.punctuation), row[1].translate(string.punctuation))
+                    self.uploadToDb(title,tuple)
+                except IndexError:
+                    print("Index Error")
         self.connection.commit()
 
     def generateComon(self):
