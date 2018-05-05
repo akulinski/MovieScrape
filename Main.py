@@ -28,7 +28,7 @@ def main():
 
     imdb=scrape_imdb.scraper()
     threadImdb=threading.Thread(target=imdb.scrape)
-    threadImdb.start()
+    #threadImdb.start()
     #upoload
 
 
@@ -43,8 +43,8 @@ def main():
     threadRotten.join()
     db.readCSV('dataRottenTomatoes.csv',"ROTTEN")
 
-    threadImdb.join()
-    db.readCSV('dataImdb.csv', 'IMDB')
+    #threadImdb.join()
+    #db.readCSV('dataImdb.csv', 'IMDB')
 
     threadFilmweb.join()
     db.readCSV('dataFilmWeb.csv', 'FILMWEB')
