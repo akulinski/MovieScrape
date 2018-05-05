@@ -14,7 +14,6 @@ class Gui(QWidget):
         self.width = 320
         self.height = 100
         self.setUp()
-
         #self.interface()
         self.show()
 
@@ -28,17 +27,27 @@ class Gui(QWidget):
         self.setLayout(windowLayout)
 
     def createHorizontalLayout(self):
-        self.horizontalGroupBox = QGroupBox("What is your favorite color?")
+        self.horizontalGroupBox = QGroupBox("Choose next movie to watch")
         layout = QHBoxLayout()
+
+        # Create textbox
+        self.textbox = QLineEdit(self) #dispaly title
+        self.textbox.move(20, 20)
+        self.textbox.resize(280, 40)
+        self.textbox.setReadOnly(True)
+        self.textbox.setText("Started")
+
+        layout.addWidget(self.textbox)
 
         buttonBlue = QPushButton('Select Movie', self)
         buttonBlue.clicked.connect(self.selectMovie)
         layout.addWidget(buttonBlue)
+
         self.horizontalGroupBox.setLayout(layout)
 
     @pyqtSlot()
     def selectMovie(self):
-        print('Selecting....')
+        self.textbox.setText("clicked")
 
 
 
