@@ -3,7 +3,9 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAc
     QVBoxLayout, QHBoxLayout, QGroupBox, QListView
 from PyQt5.QtGui import QIcon, QStandardItem, QStandardItemModel
 from PyQt5.QtCore import pyqtSlot
-import Main.py
+
+import DatabaseController
+import Main
 
 
 class Gui(QWidget):
@@ -13,6 +15,8 @@ class Gui(QWidget):
 
         #geometry
         self.initText = QStandardItem("Click genreate to select movie")
+        self.db=db=DatabaseController.Controller()
+
         self.left = 500
         self.top = 50
         self.width = 320
@@ -53,6 +57,8 @@ class Gui(QWidget):
 
     @pyqtSlot()
     def selectMovie(self):
+        Main.main()
+
         self.model.removeRow(0)
         tmp = QStandardItem("clicked")
         self.model.appendRow(tmp)

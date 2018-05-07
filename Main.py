@@ -55,5 +55,3 @@ def main():
     db.cursor.close()
     db.connection.close()
 
-if __name__ == '__main__':
-    main()

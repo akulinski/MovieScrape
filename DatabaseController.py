@@ -126,6 +126,18 @@ class Controller:
                     print("Index Error")
         self.connection.commit()
 
+    def selectComon(self):
+        statment="SELECT * FROM COMMON"
+        self.returnSet = self.cursor.execute(statment)
+        self.retList=[]
+        for t in self.returnSet:
+            self.tmpTitle=t[1]
+            self.tmpRaing=t[0]
+            tmpgoogler=GoogleInfo.Googler(str(t[1]))
+            self.tmpinfo=tmpgoogler.getInfo()
+            self.retList.append((self.title,self.tmpRaing,self.tmpinfo))
+        return  self.retList
+
     def generateComon(self):
 
         statment = "SELECT * FROM FILMWEB,ROTTEN WHERE FILMWEB.title == ROTTEN.title;"
@@ -195,7 +207,7 @@ class Controller:
                     #upload common titiles to database
                     #check if title is in watched movies from facebook
 
-                    self.countStatment="SELECT COUNT(*) FROM FACEBOOK"
+                    self.contStatment=u"SELECT COUNT(*) FROM FACEBOOK"
                     self.count=self.connection.execute(self.countStatment)
                     self.values=(str(title), mean)
 
