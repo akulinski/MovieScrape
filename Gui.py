@@ -1,20 +1,25 @@
 import sys
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLineEdit, QMessageBox, QLabel, \
-    QVBoxLayout, QHBoxLayout, QGroupBox
-from PyQt5.QtGui import QIcon
+    QVBoxLayout, QHBoxLayout, QGroupBox, QListView
+from PyQt5.QtGui import QIcon, QStandardItem, QStandardItemModel
 from PyQt5.QtCore import pyqtSlot
+import Main.py
+
 
 class Gui(QWidget):
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
         #geometry
-        self.left = 10
-        self.top = 10
+        self.initText = QStandardItem("Click genreate to select movie")
+        self.left = 500
+        self.top = 50
         self.width = 320
-        self.height = 100
+        self.height = 300
         self.setUp()
         #self.interface()
+
         self.show()
 
     def setUp(self):
@@ -31,12 +36,13 @@ class Gui(QWidget):
         layout = QHBoxLayout()
 
         # Create textbox
-        self.textbox = QLineEdit(self) #dispaly title
+        self.textbox = QListView(self) #dispaly title
         self.textbox.move(20, 20)
         self.textbox.resize(280, 40)
-        self.textbox.setReadOnly(True)
-        self.textbox.setText("Started")
 
+        self.model = QStandardItemModel(self.textbox)
+        self.model.appendRow(self.initText)
+        self.textbox.setModel(self.model)
         layout.addWidget(self.textbox)
 
         buttonBlue = QPushButton('Select Movie', self)
@@ -47,7 +53,10 @@ class Gui(QWidget):
 
     @pyqtSlot()
     def selectMovie(self):
-        self.textbox.setText("clicked")
+        self.model.removeRow(0)
+        tmp = QStandardItem("clicked")
+        self.model.appendRow(tmp)
+        self.textbox.setModel(self.model)
 
 
 
