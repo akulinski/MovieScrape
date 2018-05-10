@@ -13,8 +13,8 @@ def main():
     #starting point invoking methods from classes, scraping data info csv and uploding csv to db
 
     db=DatabaseController.Controller()
-    #fb = FacebookController.Facebook(TOKEN.token)
-    #fb.getMovies()
+    fb = FacebookController.Facebook(TOKEN.token)
+    fb.getMovies()
 
     #scrape
     filmweb=scrape_filmweb.scraper()

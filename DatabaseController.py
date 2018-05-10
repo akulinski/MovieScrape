@@ -100,30 +100,32 @@ class Controller:
         with open(file,'r') as f:
             reader = csv.reader(f)
             for row in reader:
-                try:
-                    #string strings of punctiations
-                    row[0] = row[0].strip("+")
-                    row[0] = row[0].strip()
+                if(len(row) != 0):
+                    try:
+                        #string strings of punctiations
+                        row[0] = row[0].strip("+")
+                        row[0] = row[0].strip()
 
 
-                    if title is "ROTTEN":
-                        row[0] = row[0][:-6]
-                except IndexError:
-                    print("Index Error")
+                        if title is "ROTTEN":
+                            row[0] = row[0][:-6]
+                    except IndexError:
+                        print("Index Error")
 
-               #print(row[0])
-                try:
-                    tuple = (row[0], row[1])
-                    row[0]=row[0].strip("+")
-                    row[0] = row[0].strip()
-                    if title is "ROTTEN":
-                        row[0] = row[0][:-6]
+                   #print(row[0])
+                    try:
+                        tuple = (row[0], row[1])
+                        row[0]=row[0].strip("+")
+                        row[0] = row[0].strip()
+                        if title is "ROTTEN":
+                            row[0] = row[0][:-6]
 
-                    #print(row[0])
-                    tuple=(row[0].translate(string.punctuation), row[1].translate(string.punctuation))
-                    self.uploadToDb(title,tuple)
-                except IndexError:
-                    print("Index Error")
+                        #print(row[0])
+                        tuple=(row[0].translate(string.punctuation), row[1].translate(string.punctuation))
+                        self.uploadToDb(title,tuple)
+                    except IndexError:
+                        print("Index Error")
+                        print(str(row[0])+" "+str(row[1]))
         self.connection.commit()
 
     def selectComon(self):
@@ -196,9 +198,7 @@ class Controller:
             tmp=(title, )
             self.cursor.execute("SELECT COUNT(*) FROM FACEBOOK WHERE TITLE == ?; ", tmp)
             self.result = self.cursor.fetchone()
-
             if (self.result[0] == 0):
-
                 try:
                     #calculate mean
                     mean=(float(firstMark)+float(secondMark))/2
@@ -207,8 +207,6 @@ class Controller:
                     #upload common titiles to database
                     #check if title is in watched movies from facebook
 
-                    self.contStatment=u"SELECT COUNT(*) FROM FACEBOOK"
-                    self.count=self.connection.execute(self.countStatment)
                     self.values=(str(title), mean)
 
                     GoogleInfo.Googler(str(title))

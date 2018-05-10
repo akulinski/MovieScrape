@@ -58,11 +58,16 @@ class Gui(QWidget):
     @pyqtSlot()
     def selectMovie(self):
         Main.main()
+        #self.commonList=self.db.selectComon()
 
-        self.model.removeRow(0)
-        tmp = QStandardItem("clicked")
-        self.model.appendRow(tmp)
-        self.textbox.setModel(self.model)
+        '''for x in self.commonList:
+            title=x[0]
+            rating=x[1]
+            info=x[2]
+            tmp = QStandardItem(str(title)+str(rating)+str(info))
+            self.model.appendRow(tmp)'''
+        #self.model.removeRow(0)
+        #self.textbox.setModel(self.model)
 
 
 
