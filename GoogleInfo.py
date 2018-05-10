@@ -20,8 +20,8 @@ class Googler:
         self.page_html = self.uClient.read()
         self.uClient.close()
         self.page_soup = Soup(self.page_html, "html.parser")
-
         self.containers = self.page_soup.find_all("div", {"class": "g"})
         print(self.containers[0].text)
+
     def getInfo(self):
         return self.containers[0].text

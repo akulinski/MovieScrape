@@ -129,16 +129,19 @@ class Controller:
         self.connection.commit()
 
     def selectComon(self):
+        print("Selecting common")
         statment="SELECT * FROM COMMON"
         self.returnSet = self.cursor.execute(statment)
         self.retList=[]
+        print("Return set LEN: "+str(len(self.result)))
         for t in self.returnSet:
             self.tmpTitle=t[1]
             self.tmpRaing=t[0]
+            print("SELECT COMMON "+str(t[1])+" "+str(t[0]))
             tmpgoogler=GoogleInfo.Googler(str(t[1]))
             self.tmpinfo=tmpgoogler.getInfo()
-            self.retList.append((self.title,self.tmpRaing,self.tmpinfo))
-        return  self.retList
+            self.retList.append((self.tmpTitle,self.tmpRaing,self.tmpinfo))
+        return self.retList
 
     def generateComon(self):
 
@@ -200,15 +203,14 @@ class Controller:
             self.result = self.cursor.fetchone()
             if (self.result[0] == 0):
                 try:
+
                     #calculate mean
                     mean=(float(firstMark)+float(secondMark))/2
                     print("title: "+str(title)+"\nraking from FILMWEB: "+str(firstMark)+"\nranking from ROTTENTOMATOES:  "+str(secondMark)+"\nMEAN value of both : "+str(mean))
                     wr.wirteToFile("Tytul: "+str(title),"Srednia z FILMWEB i ROTTENTOMATOES: "+str(mean))
                     #upload common titiles to database
                     #check if title is in watched movies from facebook
-
                     self.values=(str(title), mean)
-
                     GoogleInfo.Googler(str(title))
                     self.uploadToDb("COMMON", self.values)
 

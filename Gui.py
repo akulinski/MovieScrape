@@ -6,6 +6,7 @@ from PyQt5.QtCore import pyqtSlot
 
 import DatabaseController
 import Main
+import threading
 
 
 class Gui(QWidget):
@@ -15,8 +16,7 @@ class Gui(QWidget):
 
         #geometry
         self.initText = QStandardItem("Click genreate to select movie")
-        self.db=db=DatabaseController.Controller()
-
+        self.db = DatabaseController.Controller()
         self.left = 500
         self.top = 50
         self.width = 320
@@ -57,17 +57,22 @@ class Gui(QWidget):
 
     @pyqtSlot()
     def selectMovie(self):
-        Main.main()
-        #self.commonList=self.db.selectComon()
+        self.mainThread=threading.Thread(target=Main.main(self.db))
+        self.mainThread.start()
+        self.mainThread.join()
 
-        '''for x in self.commonList:
+        self.commonList = self.db.selectComon()
+
+        #print("LEN: "+len(self.commonList))
+        for x in self.commonList:
             title=x[0]
             rating=x[1]
             info=x[2]
             tmp = QStandardItem(str(title)+str(rating)+str(info))
-            self.model.appendRow(tmp)'''
-        #self.model.removeRow(0)
-        #self.textbox.setModel(self.model)
+            print("GUI: "+str(tmp))
+            self.model.appendRow(tmp)
+        self.model.removeRow(0)
+        self.textbox.setModel(self.model)
 
 
 

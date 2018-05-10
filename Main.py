@@ -8,11 +8,9 @@ import TOKEN
 import GoogleInfo
 import threading
 
-def main():
+def main(db):
 
     #starting point invoking methods from classes, scraping data info csv and uploding csv to db
-
-    db=DatabaseController.Controller()
     fb = FacebookController.Facebook(TOKEN.token)
     fb.getMovies()
 
@@ -52,6 +50,6 @@ def main():
     db.generateComon()
 
 #closing cursore
-    db.cursor.close()
-    db.connection.close()
+    #db.cursor.close()
+    #db.connection.close()
 
