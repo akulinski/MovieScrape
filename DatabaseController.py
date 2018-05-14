@@ -84,6 +84,18 @@ class Controller:
 
         self.heap=[]
 
+
+    #special function for uploading to facebook db since facebook has one column
+    def uploadToFacebook(self,title):
+        statement = "INSERT INTO FACEBOOK VALUES (?);"
+        try:
+            #python treats string as set of charachers so it thinks i wat to upload len(title) values to database
+            tmp = (title,)
+            self.cursor.execute(statement, tmp)
+            self.connection.commit()
+        except sqlite3.IntegrityError:
+            pass
+
     def uploadToDb(self,title,values):
         #prepare statment
         statement = "INSERT INTO %s VALUES (?,?);"%title

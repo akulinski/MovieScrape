@@ -11,7 +11,7 @@ import threading
 def main(db):
 
     #starting point invoking methods from classes, scraping data info csv and uploding csv to db
-    fb = FacebookController.Facebook(TOKEN.token)
+    fb = FacebookController.Facebook(TOKEN.token,db)
     fb.getMovies()
 
     #scrape
