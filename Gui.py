@@ -7,12 +7,14 @@ from PyQt5.QtCore import pyqtSlot
 import DatabaseController
 import Main
 import threading
-
+import logging
 
 class Gui(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.logger = logging.getLogger(__name__)
+        logging.basicConfig(filename='example.log', level=logging.DEBUG)
 
         #geometry
         self.initText = QStandardItem("Click genreate to select movie")
@@ -63,14 +65,19 @@ class Gui(QWidget):
 
         self.commonList = self.db.selectComon()
 
+
         #print("LEN: "+len(self.commonList))
-        for x in self.commonList:
-            title=x[0]
-            rating=x[1]
-            info=x[2]
-            tmp = QStandardItem(str(title)+str(rating)+str(info))
-            print("GUI: "+str(tmp))
-            self.model.appendRow(tmp)
+        x=self.commonList[0]
+        title=x[0]
+        rating=x[1]
+        info=x[2]
+        tmp = QStandardItem(str(title)+str(rating)+str(info))
+        logtmp=(str(title)+str(rating)+str(info)).encode("utf-8")
+
+        self.logger.debug("Napis=%s",logtmp)
+        #print("GUI: "+str(tmp))
+        self.model.appendRow(tmp)
+
         self.model.removeRow(0)
         self.textbox.setModel(self.model)
 

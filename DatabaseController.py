@@ -90,7 +90,7 @@ class Controller:
         try:
             #exec statment
             self.cursor.execute(statement, values)
-
+            self.connection.commit()
         except sqlite3.IntegrityError:
             #getting errors because of stacking data in csv files, for debbuging pourpose deleate csv
             pass
@@ -105,7 +105,6 @@ class Controller:
                         #string strings of punctiations
                         row[0] = row[0].strip("+")
                         row[0] = row[0].strip()
-
 
                         if title is "ROTTEN":
                             row[0] = row[0][:-6]
@@ -129,7 +128,7 @@ class Controller:
         self.connection.commit()
 
     def selectComon(self):
-        print("Selecting common")
+        #print("Selecting common")
         statment="SELECT * FROM COMMON"
         self.returnSet = self.cursor.execute(statment)
         self.retList=[]
@@ -178,7 +177,7 @@ class Controller:
                 self.result = self.cursor.fetchone()
 
                 if(self.result[0] == 0):
-                    print("Title "+x[1]+" Rating: "+str(x[0]))
+                    #print("Title "+x[1]+" Rating: "+str(x[0]))
                     wr.wirteToFile("Tytul: " + str(x[1]), "Srednia: " + str(x[0]))
                 self.count += 1
 
@@ -186,33 +185,33 @@ class Controller:
                 GoogleInfo.Googler(str(x[1]))
                 heapq.heappushpop(self.heap, x)
 
+        else:
+            for t in self.returnSet :
+                #map values from query to variables
+                title = t[0]
+                firstMark = str(t[1])
+                secondMark=str(t[3])
 
-        for t in self.returnSet :
-            #map values from query to variables
-            title = t[0]
-            firstMark = str(t[1])
-            secondMark=str(t[3])
+                #replace , with .
+                firstMark=firstMark.replace(",",".")
+                secondMark=secondMark.replace(",",".")
 
-            #replace , with .
-            firstMark=firstMark.replace(",",".")
-            secondMark=secondMark.replace(",",".")
+                #checking if title is watched movies from FACEBOOK
+                tmp=(title, )
+                self.cursor.execute("SELECT COUNT(*) FROM FACEBOOK WHERE TITLE == ?; ", tmp)
+                self.result = self.cursor.fetchone()
+                if (self.result[0] == 0):
+                    try:
 
-            #checking if title is watched movies from FACEBOOK
-            tmp=(title, )
-            self.cursor.execute("SELECT COUNT(*) FROM FACEBOOK WHERE TITLE == ?; ", tmp)
-            self.result = self.cursor.fetchone()
-            if (self.result[0] == 0):
-                try:
+                        #calculate mean
+                        mean=(float(firstMark)+float(secondMark))/2
+                        print("title: "+str(title)+"\nraking from FILMWEB: "+str(firstMark)+"\nranking from ROTTENTOMATOES:  "+str(secondMark)+"\nMEAN value of both : "+str(mean))
+                        wr.wirteToFile("Tytul: "+str(title),"Srednia z FILMWEB i ROTTENTOMATOES: "+str(mean))
+                        #upload common titiles to database
+                        #check if title is in watched movies from facebook
+                        self.values=(str(title), mean)
+                        GoogleInfo.Googler(str(title))
+                        self.uploadToDb("COMMON", self.values)
 
-                    #calculate mean
-                    mean=(float(firstMark)+float(secondMark))/2
-                    print("title: "+str(title)+"\nraking from FILMWEB: "+str(firstMark)+"\nranking from ROTTENTOMATOES:  "+str(secondMark)+"\nMEAN value of both : "+str(mean))
-                    wr.wirteToFile("Tytul: "+str(title),"Srednia z FILMWEB i ROTTENTOMATOES: "+str(mean))
-                    #upload common titiles to database
-                    #check if title is in watched movies from facebook
-                    self.values=(str(title), mean)
-                    GoogleInfo.Googler(str(title))
-                    self.uploadToDb("COMMON", self.values)
-
-                except ValueError:
-                    pass
+                    except ValueError:
+                        pass
