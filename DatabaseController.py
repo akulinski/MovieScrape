@@ -149,7 +149,7 @@ class Controller:
             self.tmpTitle=t[1]
             self.tmpRaing=t[0]
             print("SELECT COMMON "+str(t[1])+" "+str(t[0]))
-            tmpgoogler=GoogleInfo.Googler(str(t[1]))
+            tmpgoogler=GoogleInfo.Googler(str(t[0]),"filmweb")
             self.tmpinfo=tmpgoogler.getInfo()
             self.retList.append((self.tmpTitle,self.tmpRaing,self.tmpinfo))
         return self.retList
@@ -194,7 +194,9 @@ class Controller:
                 self.count += 1
 
                 #poping from heap
-                GoogleInfo.Googler(str(x[1]))
+                self.values = (str(x[1]), x[0])
+                # GoogleInfo.Googler(str(title))
+                self.uploadToDb("COMMON", self.values)
                 heapq.heappushpop(self.heap, x)
 
         else:
@@ -222,7 +224,7 @@ class Controller:
                         #upload common titiles to database
                         #check if title is in watched movies from facebook
                         self.values=(str(title), mean)
-                        GoogleInfo.Googler(str(title))
+                        #GoogleInfo.Googler(str(title))
                         self.uploadToDb("COMMON", self.values)
 
                     except ValueError:
